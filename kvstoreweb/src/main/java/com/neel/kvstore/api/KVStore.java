@@ -27,7 +27,7 @@ public class KVStore {
 	public Response post(@PathParam(value = "key") String key, String str){
 		JSONObject json = JSONObject.fromObject(str);
 		dao.put(key, json);
-		String output = "Added Successfully..!";
+		String output = "Added Successfully 1..!";
 		return Response.status(200).entity(output).build();
 	}
 	

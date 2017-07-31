@@ -1,0 +1,10 @@
+
+kvstoreweb/.classpath
+*.prefs
+kvstoreweb/.project
+kvstoreweb/.settings/.jsdtscope
+kvstoreweb/.settings/org.eclipse.wst.common.component
+kvstoreweb/.settings/org.eclipse.wst.common.project.facet.core.xml
+kvstoreweb/.settings/org.eclipse.wst.jsdt.ui.superType.container
+kvstoreweb/.settings/org.eclipse.wst.jsdt.ui.superType.name
+.project
