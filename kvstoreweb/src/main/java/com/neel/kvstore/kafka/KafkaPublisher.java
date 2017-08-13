@@ -47,12 +47,14 @@ public class KafkaPublisher {
 	      Producer<String, String> producer = new KafkaProducer
 	         <String, String>(props);
 	            
-	//      for(int i = 0; i < 10; i++){
-	    	 // JSONObject json = JSONObject.fromObject(args[1]);
+
+	         if(json != null){
 	         producer.send(new ProducerRecord<String, String>(topicName, 
 	        		 key, json.toString()));
-	           // Integer.toString(i), Integer.toString(i)));
-	  //    }
+	      } else {
+	    	  producer.send(new ProducerRecord<String, String>(topicName, 
+		        		 key,null));
+	      }
 	               System.out.println("Message sent successfully");
 	               producer.close();
 	   }

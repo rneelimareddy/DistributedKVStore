@@ -33,6 +33,7 @@ public class KVStore {
 	public Response post(@PathParam(value = "key") String key, String str){
 		JSONObject json = JSONObject.fromObject(str);
 		dao.put(key, json);
+		System.out.println("Before Publish..!");
 		kp.publish(key,json);
 		String output = "Added Successfully..!";
 		return Response.status(200).entity(output).build();
@@ -52,18 +53,16 @@ public class KVStore {
 	@Path("/delete/{key}")
 	public Response delete(@PathParam(value = "key") String key){
 	dao.remove(key);
-	JSONObject json = null;
-	kp.publish(key,json);
+	kp.publish(key,null);
 	String output = "Deleted Successfully..!";
 	return Response.status(200).entity(output).build();
 }
 	@GET
 	@Path("/getall")
-	public Response get(){
-		
+	public Response get(){	
 		Set<Entry<String,JSONObject>> jsonGetAll = dao.getAll();
 		System.out.println("Get All Values: "+ jsonGetAll);
-		String message =(String) (jsonGetAll != null ? jsonGetAll : "Requested Key not found..!");
+		String message =(String) (jsonGetAll != null ? jsonGetAll.toString() : "Requested Key not found..!");
 		return Response.status(200).entity(message).build();		
 	}
 	

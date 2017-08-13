@@ -14,6 +14,12 @@
 		</init-param>
 	</servlet>
 	
+	 <listener>
+	<listener-class>
+             com.neel.kvstore.init.Listener
+        </listener-class>
+   </listener>
+   
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/kvstore/*</url-pattern>

@@ -12,9 +12,9 @@ import com.neel.kvstore.data.InMemoryStore;
 
 import net.sf.json.JSONObject;
 
-public class KafkaSubscriber {
+public class KafkaSubscriber implements Runnable {
 		   static IDataAccessObject dao = new InMemoryStore();
-		   public void subscribe(String key, JSONObject json) {
+		   public void run() {
 			   
 		      
 		      String topic = "test";
@@ -41,9 +41,10 @@ public class KafkaSubscriber {
 		               System.out.printf("offset = %d, key = %s, value = %s\n", 
 		               record.offset(), record.key(), record.value());
 		            if(record.value() == null){
-		            	dao.remove(key);
+		            	dao.remove(record.key());
 		            } else {
-		            	dao.put(key, json);
+		            	JSONObject JSO = JSONObject.fromObject(record.value());
+		            	dao.put(record.key(), JSO);
 		            }
 		           }
 		      }     

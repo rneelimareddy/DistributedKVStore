@@ -12,7 +12,7 @@ public class InMemoryStore implements IDataAccessObject {
 	
 	private Map<String, JSONObject> map = new HashMap<String, JSONObject>(); 
 
-	public void put(String key, JSONObject json) {
+	public synchronized void put(String key, JSONObject json) {
 		// TODO Auto-generated method stub
 		map.put(key,json);
 		System.out.println("Added Values: "+ map.get(key)); 
@@ -23,7 +23,7 @@ public class InMemoryStore implements IDataAccessObject {
 		return map.get(key);  
 	}
 
-	public void remove(String key) {
+	public synchronized void remove(String key) {
 		// TODO Auto-generated method stub
 		 map.remove(key);
 	}
