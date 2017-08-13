@@ -8,7 +8,6 @@
 	</parent>
 	<groupId>com.neel.kvstore</groupId>
 	<artifactId>kvstoreweb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -18,11 +17,6 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0</version>
 		</dependency>
-		<!-- <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>2.26-b03</version>
-        </dependency> -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
@@ -39,9 +33,13 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+		<dependency>
+	    	<groupId>org.apache.kafka</groupId>
+	    	<artifactId>kafka-clients</artifactId>
+	    	<version>0.11.0.0</version>
+		</dependency>
 	</dependencies>
 	<properties>
-  		<!-- Use the latest version whenever possible. -->
   		<jackson.version>2.4.4</jackson.version>
 	</properties>
 	<build>

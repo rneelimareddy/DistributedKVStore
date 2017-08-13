@@ -1,5 +1,9 @@
 package com.neel.kvstore.api;
 
+
+import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import com.neel.kvstore.data.IDataAccessObject;
 import com.neel.kvstore.data.InMemoryStore;
+import com.neel.kvstore.kafka.KafkaPublisher;
 
 import net.sf.json.JSONObject;
 
@@ -19,6 +24,7 @@ import net.sf.json.JSONObject;
 public class KVStore {
 	
 	static IDataAccessObject dao = new InMemoryStore();
+	static KafkaPublisher kp = new KafkaPublisher();
 	
 	@POST
 	@Path("/add/{key}")
@@ -27,9 +33,10 @@ public class KVStore {
 	public Response post(@PathParam(value = "key") String key, String str){
 		JSONObject json = JSONObject.fromObject(str);
 		dao.put(key, json);
-		String output = "Added Successfully 1..!";
+		kp.publish(key,json);
+		String output = "Added Successfully..!";
 		return Response.status(200).entity(output).build();
-	}
+	}	
 	
 	@GET
 	@Path("/retrieve/{key}")
@@ -37,17 +44,27 @@ public class KVStore {
 		
 		JSONObject jsonGet = dao.get(key);
 		System.out.println("Get Values: "+ jsonGet);
-		String message = jsonGet != null ? jsonGet.toString() : "None";
+		String message = jsonGet != null ? jsonGet.toString() : "Requested Key not found..!";
 		return Response.status(200).entity(message).build();		
 	}
 	
 	@DELETE
 	@Path("/delete/{key}")
 	public Response delete(@PathParam(value = "key") String key){
-	
 	dao.remove(key);
+	JSONObject json = null;
+	kp.publish(key,json);
 	String output = "Deleted Successfully..!";
 	return Response.status(200).entity(output).build();
 }
+	@GET
+	@Path("/getall")
+	public Response get(){
+		
+		Set<Entry<String,JSONObject>> jsonGetAll = dao.getAll();
+		System.out.println("Get All Values: "+ jsonGetAll);
+		String message =(String) (jsonGetAll != null ? jsonGetAll : "Requested Key not found..!");
+		return Response.status(200).entity(message).build();		
+	}
 	
 }

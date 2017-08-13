@@ -2,7 +2,10 @@ package com.neel.kvstore.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class InMemoryStore implements IDataAccessObject {
@@ -22,7 +25,12 @@ public class InMemoryStore implements IDataAccessObject {
 
 	public void remove(String key) {
 		// TODO Auto-generated method stub
-		map.remove(key);
+		 map.remove(key);
+	}
+	
+	public Set<Entry<String, JSONObject>> getAll() {
+		// TODO Auto-generated method stub
+		return map.entrySet();
 	}
 
 }
