@@ -17,7 +17,7 @@ public class KafkaSubscriber implements Runnable {
 		   public void run() {
 			   
 		      
-		      String topic = "test";
+		      String topic = "kv";
 		      String group = "group1";
 		      Properties props = new Properties();
 		      props.put("bootstrap.servers", "localhost:9092");
@@ -38,13 +38,13 @@ public class KafkaSubscriber implements Runnable {
 		      while (true) {
 		         ConsumerRecords<String, String> records = consumer.poll(100);
 		            for (ConsumerRecord<String, String> record : records) {
-		               System.out.printf("offset = %d, key = %s, value = %s\n", 
-		               record.offset(), record.key(), record.value());
+		               System.out.printf("offset = %d, key = %s, value = %s, timestamp = %s\n", 
+		               record.offset(), record.key(), record.value(), record.timestamp());
 		            if(record.value() == null){
 		            	dao.remove(record.key());
 		            } else {
 		            	JSONObject JSO = JSONObject.fromObject(record.value());
-		            	dao.put(record.key(), JSO);
+		            	dao.put(record.key(), JSO, record.timestamp());
 		            }
 		           }
 		      }     

@@ -11,11 +11,13 @@ import net.sf.json.JSONObject;
 
 public class KafkaPublisher {
 	
-	public void publish(String key, JSONObject json){
+	private static final String topicName = "kv";
+	private static Producer<String, String> producer = null;
+	
+	public void init(){
+		
+		 //Assign topicName to string variable
 	      
-	   
-	      //Assign topicName to string variable
-	      String topicName = "test";
 	      
 	      // create instance for properties to access producer configs   
 	      Properties props = new Properties();
@@ -44,19 +46,23 @@ public class KafkaPublisher {
 	      props.put("value.serializer", 
 	         "org.apache.kafka.common.serialization.StringSerializer");
 	      
-	      Producer<String, String> producer = new KafkaProducer
+	      producer = new KafkaProducer
 	         <String, String>(props);
-	            
-
-	         if(json != null){
-	         producer.send(new ProducerRecord<String, String>(topicName, 
-	        		 key, json.toString()));
-	      } else {
-	    	  producer.send(new ProducerRecord<String, String>(topicName, 
-		        		 key,null));
-	      }
-	               System.out.println("Message sent successfully");
-	               producer.close();
-	   }
+	}
+	
+	public void publish(String key, JSONObject json, long timestamp){
+	  if(producer == null){
+		  init();
+	  }
+	  String value = (json == null) ? null : json.toString();
+      producer.send(new ProducerRecord<String, String>(topicName, 0, timestamp, key, value));
+      
+      System.out.println("Message sent successfully");
+      
+	}
+	
+	public void destroy(){
+		producer.close();
+	}
 
 }

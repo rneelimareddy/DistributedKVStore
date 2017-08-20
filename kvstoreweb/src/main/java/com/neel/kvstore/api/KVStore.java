@@ -1,6 +1,7 @@
 package com.neel.kvstore.api;
 
 
+import java.time.Instant;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -32,9 +33,10 @@ public class KVStore {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(@PathParam(value = "key") String key, String str){
 		JSONObject json = JSONObject.fromObject(str);
-		dao.put(key, json);
+		Instant now = Instant.now();
+		dao.put(key, json, now.toEpochMilli());
 		System.out.println("Before Publish..!");
-		kp.publish(key,json);
+		kp.publish(key,json, now.toEpochMilli());
 		String output = "Added Successfully..!";
 		return Response.status(200).entity(output).build();
 	}	
@@ -53,7 +55,7 @@ public class KVStore {
 	@Path("/delete/{key}")
 	public Response delete(@PathParam(value = "key") String key){
 	dao.remove(key);
-	kp.publish(key,null);
+	kp.publish(key,null, Instant.now().toEpochMilli());
 	String output = "Deleted Successfully..!";
 	return Response.status(200).entity(output).build();
 }
